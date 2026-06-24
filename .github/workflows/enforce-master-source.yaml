@@ -1,0 +1,16 @@
+# .github/workflows/enforce-master-source.yml
+name: Enforce master source
+on:
+  pull_request:
+    branches: [master]
+jobs:
+  check-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source must be staging
+        run: |
+          if [ "${{ github.head_ref }}" != "staging" ]; then
+            echo "❌ master poate primi merge doar din 'staging'. PR-ul vine din '${{ github.head_ref }}'."
+            exit 1
+          fi
+          echo "✅ Sursa e staging."
